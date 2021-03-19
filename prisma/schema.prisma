@@ -1,0 +1,31 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Store {
+  id          String @id @default(cuid())
+  shop        String @unique
+  accessToken String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Promo {
+  id   String @id @default(cuid())
+  code String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Nonce {
+  id String @id @default(cuid())
+
+  createdAt DateTime @default(now())
+}
