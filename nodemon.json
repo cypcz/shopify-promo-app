@@ -1,4 +1,5 @@
 {
+  "watch": [".env", "src"],
   "ext": "ts,tsx",
-  "exec": "tsc && node dist/src/index.js"
+  "exec": "yarn generate:nexus && tsc && node dist/src/index.js"
 }

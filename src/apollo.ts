@@ -9,7 +9,7 @@ import { createApp } from "@shopify/app-bridge";
 import { getSessionToken } from "@shopify/app-bridge-utils";
 import { setContext } from "apollo-link-context";
 import { useMemo } from "react";
-import { NEXT_PUBLIC_SHOPIFY_API_KEY, SHOPIFY_APP_URL } from "./setup";
+import { NEXT_PUBLIC_SHOPIFY_API_KEY } from "./setup";
 
 const shop = new URLSearchParams(
   typeof window === "undefined" ? "" : window.location.search,
@@ -23,11 +23,11 @@ export const bridgeConfig = {
 
 const app = createApp(bridgeConfig);
 
-const authLink = setContext(async () => {
+const authLink = setContext(async (_req, ctx) => {
   const token = await getSessionToken(app);
-  console.log(token);
   return {
     headers: {
+      ...ctx.headers,
       authorization: token ? `Bearer ${token}` : "",
     },
   };
@@ -44,7 +44,7 @@ function createIsomorphLink() {
     return ApolloLink.from([
       authLink as any,
       createHttpLink({
-        uri: `${SHOPIFY_APP_URL}/graphql`,
+        uri: "/graphql",
       }),
     ]);
   }

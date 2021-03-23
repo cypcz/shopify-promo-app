@@ -1,19 +1,21 @@
 import { Layout, Page } from "@shopify/polaris";
-import Head from "next/head";
 import Link from "next/link";
+import {
+  useProductsQuery,
+  usePromosQuery,
+} from "../../codegen/generated/graphql";
 
 const SecondPage = () => {
+  const { data } = usePromosQuery();
+  const { data: productsData } = useProductsQuery();
+
+  console.log({ data, productsData });
   return (
-    <>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Page>
-        <Layout>second</Layout>
-        <Link href="/">to main</Link>
-      </Page>
-    </>
+    <Page>
+      <Layout>second</Layout>
+      <Link href="/">to main</Link>
+      <button>pay</button>
+    </Page>
   );
 };
 

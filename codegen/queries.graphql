@@ -1,0 +1,17 @@
+query Promos {
+  promos {
+    id
+    code
+  }
+}
+
+query Products {
+  products(first: 5) {
+    edges {
+      node {
+        id
+        title
+      }
+    }
+  }
+}

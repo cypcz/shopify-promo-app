@@ -15,6 +15,8 @@ export const checkMissingEnvVars = () => {
   }
 };
 
+export const IS_DEV = process.env.NODE_ENV !== "production";
+
 export {
   NEXT_PUBLIC_SHOPIFY_API_KEY,
   SHOPIFY_API_SCOPES,

@@ -1,2 +1,4 @@
 *.graphql
 prisma/migrations/*
+generated/*
+codegen/*

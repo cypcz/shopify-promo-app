@@ -1,0 +1,10 @@
+schema:
+  - codegen/generated/schema.graphql
+  - codegen/generated/shopify-admin-schema.json
+documents: codegen/**/*.graphql
+generates:
+  codegen/generated/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo

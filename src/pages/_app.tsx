@@ -4,6 +4,7 @@ import { AppProvider } from "@shopify/polaris";
 import "@shopify/polaris/dist/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
 import { AppProps } from "next/app";
+import Head from "next/head";
 import { bridgeConfig, useApollo } from "../apollo";
 import ClientRouter from "../components/ClientRouter";
 
@@ -11,14 +12,20 @@ const App = ({ Component, pageProps }: AppProps) => {
   const apolloClient = useApollo(pageProps.initialApolloState);
 
   return (
-    <ApolloProvider client={apolloClient}>
-      <AppBridgeProvider config={bridgeConfig}>
-        <AppProvider i18n={{ translations }}>
-          <ClientRouter />
-          <Component {...pageProps} />
-        </AppProvider>
-      </AppBridgeProvider>
-    </ApolloProvider>
+    <>
+      <Head>
+        <title>Create Next App</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <ApolloProvider client={apolloClient}>
+        <AppBridgeProvider config={bridgeConfig}>
+          <AppProvider i18n={{ translations }}>
+            <ClientRouter />
+            <Component {...pageProps} />
+          </AppProvider>
+        </AppBridgeProvider>
+      </ApolloProvider>
+    </>
   );
 };
 
