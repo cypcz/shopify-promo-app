@@ -16,7 +16,13 @@ import {
   SHOPIFY_API_SECRET,
   SHOPIFY_APP_URL,
 } from "./setup";
-import { validateHMAC, validateHostname } from "./utils";
+import { validateHMAC, validateHostname, validateWebhookHMAC } from "./utils";
+import { configureWebhooks, WEBHOOKS } from "./webhooks";
+import {
+  customersDataRequest,
+  customersRedact,
+  shopRedact,
+} from "./webhooks/handlers";
 dotenv.config();
 
 const port = PORT ? parseInt(PORT, 10) : 3000;
@@ -39,12 +45,26 @@ const handle = nextApp.getRequestHandler();
 
     server.applyMiddleware({ app });
 
+    app.use(express.raw({ type: "application/json" }));
+
+    // Webhooks
+    WEBHOOKS.forEach((hook) => {
+      app.post(`/webhook/${hook.topic}`, validateWebhookHMAC, hook.fn);
+    });
+    app.post("/webhook/customers/redact", validateWebhookHMAC, customersRedact);
+    app.post("/webhook/shop/redact", validateWebhookHMAC, shopRedact);
+    app.post(
+      "/webhook/customers/data_request",
+      validateWebhookHMAC,
+      customersDataRequest,
+    );
+
     app.get("/", validateHMAC, async (req, res) => {
       const { shop } = req.query as any;
 
       const store = await prisma.store.findUnique({ where: { shop } });
 
-      if (store) {
+      if (store && store.isInstalled) {
         return handle(req, res);
       }
 
@@ -90,12 +110,15 @@ const handle = nextApp.getRequestHandler();
 
         const store = await prisma.store.findUnique({ where: { shop } });
 
-        if (!store) {
-          await prisma.store.create({
-            data: { shop, accessToken },
+        if (!store || !store.isInstalled) {
+          const newStore = await prisma.store.upsert({
+            where: { shop },
+            create: { shop, accessToken, isInstalled: true },
+            update: { accessToken, isInstalled: true },
           });
 
           await prisma.nonce.delete({ where: { id: nonce.id } });
+          await configureWebhooks(newStore);
         }
 
         res.redirect(

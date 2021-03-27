@@ -9,7 +9,7 @@ import path from "path";
 import * as types from "./modules";
 import { IS_DEV } from "./setup";
 
-const executor = async ({ document, variables, context }: any) => {
+export const executor = async ({ document, variables, context }: any) => {
   const query = print(document);
   try {
     const fetchResult = await axios.post(

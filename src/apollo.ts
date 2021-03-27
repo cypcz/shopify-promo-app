@@ -5,26 +5,13 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from "@apollo/client";
-import { createApp } from "@shopify/app-bridge";
 import { getSessionToken } from "@shopify/app-bridge-utils";
 import { setContext } from "apollo-link-context";
 import { useMemo } from "react";
-import { NEXT_PUBLIC_SHOPIFY_API_KEY } from "./setup";
-
-const shop = new URLSearchParams(
-  typeof window === "undefined" ? "" : window.location.search,
-).get("shop");
-
-export const bridgeConfig = {
-  apiKey: NEXT_PUBLIC_SHOPIFY_API_KEY,
-  shopOrigin: shop || "",
-  forceRedirect: true,
-};
-
-const app = createApp(bridgeConfig);
+import { bridgeApp } from "./bridge";
 
 const authLink = setContext(async (_req, ctx) => {
-  const token = await getSessionToken(app);
+  const token = await getSessionToken(bridgeApp);
   return {
     headers: {
       ...ctx.headers,

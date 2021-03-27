@@ -9757,6 +9757,7 @@ export type Mutation = {
   collectionUnpublish?: Maybe<CollectionUnpublishPayload>;
   /** Updates a collection. */
   collectionUpdate?: Maybe<CollectionUpdatePayload>;
+  createPayment: Scalars['String'];
   /** Add tax exemptions to a customer. */
   customerAddTaxExemptions?: Maybe<CustomerAddTaxExemptionsPayload>;
   /** Creates a new customer. */
@@ -21472,6 +21473,14 @@ export type Promo = {
   id: Scalars['ID'];
 };
 
+export type CreatePaymentMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CreatePaymentMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createPayment'>
+);
+
 export type PromosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -21501,6 +21510,36 @@ export type ProductsQuery = (
 );
 
 
+export const CreatePaymentDocument = gql`
+    mutation CreatePayment {
+  createPayment
+}
+    `;
+export type CreatePaymentMutationFn = Apollo.MutationFunction<CreatePaymentMutation, CreatePaymentMutationVariables>;
+
+/**
+ * __useCreatePaymentMutation__
+ *
+ * To run a mutation, you first call `useCreatePaymentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePaymentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPaymentMutation, { data, loading, error }] = useCreatePaymentMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCreatePaymentMutation(baseOptions?: Apollo.MutationHookOptions<CreatePaymentMutation, CreatePaymentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreatePaymentMutation, CreatePaymentMutationVariables>(CreatePaymentDocument, options);
+      }
+export type CreatePaymentMutationHookResult = ReturnType<typeof useCreatePaymentMutation>;
+export type CreatePaymentMutationResult = Apollo.MutationResult<CreatePaymentMutation>;
+export type CreatePaymentMutationOptions = Apollo.BaseMutationOptions<CreatePaymentMutation, CreatePaymentMutationVariables>;
 export const PromosDocument = gql`
     query Promos {
   promos {

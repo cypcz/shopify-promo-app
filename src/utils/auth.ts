@@ -11,6 +11,9 @@ const isHostnameValid = (hostname: string) => {
 
 const isHMACValid = (queryParams: Record<string, any>) => {
   const { hmac, ...rest } = queryParams;
+
+  if (!hmac) throw new Error("Webhook security checks failed for hmac");
+
   const hash = crypto
     .createHmac("SHA256", SHOPIFY_API_SECRET)
     .update(new URLSearchParams(rest).toString())
@@ -21,12 +24,34 @@ const isHMACValid = (queryParams: Record<string, any>) => {
   }
 };
 
+const isWebhookHMACValid = (req: Request) => {
+  const hmac = req.headers["x-shopify-hmac-sha256"];
+  if (!hmac) throw new Error("Webhook security checks failed for hmac");
+  const hash = crypto
+    .createHmac("SHA256", SHOPIFY_API_SECRET)
+    .update(req.body.toString(), "utf8")
+    .digest("base64");
+
+  if (hash !== hmac) {
+    throw new Error("Webhook security checks failed for hmac");
+  }
+};
+
 export const validateHMAC = (
   req: Request,
   _res: Response,
   next: NextFunction,
 ) => {
   isHMACValid(req.query);
+  next();
+};
+
+export const validateWebhookHMAC = (
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) => {
+  isWebhookHMACValid(req);
   next();
 };
 

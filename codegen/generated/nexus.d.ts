@@ -48,6 +48,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
+    createPayment: string; // String!
     deletePromo: NexusGenRootTypes['Promo']; // Promo!
     upsertPromo: NexusGenRootTypes['Promo']; // Promo!
   }
@@ -63,6 +64,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
+    createPayment: 'String'
     deletePromo: 'Promo'
     upsertPromo: 'Promo'
   }

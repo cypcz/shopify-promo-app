@@ -5,7 +5,8 @@ import "@shopify/polaris/dist/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { bridgeConfig, useApollo } from "../apollo";
+import { useApollo } from "../apollo";
+import { bridgeConfig } from "../bridge";
 import ClientRouter from "../components/ClientRouter";
 
 const App = ({ Component, pageProps }: AppProps) => {

@@ -3,6 +3,7 @@
 
 
 type Mutation {
+  createPayment: String!
   deletePromo(id: ID!): Promo!
   upsertPromo(code: String!, id: ID): Promo!
 }
