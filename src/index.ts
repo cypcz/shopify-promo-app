@@ -16,7 +16,12 @@ import {
   SHOPIFY_API_SECRET,
   SHOPIFY_APP_URL,
 } from "./setup";
-import { validateHMAC, validateHostname, validateWebhookHMAC } from "./utils";
+import {
+  setShopOriginCookie,
+  validateHMAC,
+  validateHostname,
+  validateWebhookHMAC,
+} from "./utils";
 import { configureWebhooks, WEBHOOKS } from "./webhooks";
 import {
   customersDataRequest,
@@ -65,6 +70,7 @@ const handle = nextApp.getRequestHandler();
       const store = await prisma.store.findUnique({ where: { shop } });
 
       if (store && store.isInstalled) {
+        setShopOriginCookie(res, shop);
         return handle(req, res);
       }
 
@@ -122,7 +128,7 @@ const handle = nextApp.getRequestHandler();
         }
 
         res.redirect(
-          `https://${shop}/admin/apps/${NEXT_PUBLIC_SHOPIFY_API_KEY}?shop=${shop}`,
+          `https://${shop}/admin/apps/${NEXT_PUBLIC_SHOPIFY_API_KEY}`,
         );
       },
     );

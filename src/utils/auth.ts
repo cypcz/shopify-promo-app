@@ -74,3 +74,10 @@ export const verifyJWT = (token: string): string => {
 
   return tokenData?.dest.replace("https://", "");
 };
+
+export const setShopOriginCookie = (res: Response, shop: string) =>
+  res.cookie("shopOrigin", shop, {
+    httpOnly: false,
+    secure: true,
+    sameSite: "none",
+  });

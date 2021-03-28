@@ -1,9 +1,11 @@
-import { ResourcePicker, TitleBar } from "@shopify/app-bridge-react";
-import { EmptyState, Layout, Page } from "@shopify/polaris";
+import { Loading, ResourcePicker } from "@shopify/app-bridge-react";
+import { EmptyState, Layout, Navigation, Page } from "@shopify/polaris";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 const IndexPage = () => {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const handleSelection = (resources: any) => {
     const idsFromResources = resources.selection.map(
@@ -15,13 +17,29 @@ const IndexPage = () => {
   };
   return (
     <Page>
-      <TitleBar
-        title="Sample App"
+      <Navigation location={router.route}>
+        <Navigation.Section
+          items={[
+            {
+              url: "/",
+              label: "Home",
+              onClick: () => router.push("/"),
+            },
+            {
+              url: "/second",
+              label: "Second",
+              onClick: () => router.push("/second"),
+            },
+          ]}
+        />
+      </Navigation>
+      {/*       <TitleBar
+        title="Sample Appgg"
         primaryAction={{
           content: "Select products",
           onAction: () => setOpen(true),
         }}
-      />
+      /> */}
       <ResourcePicker
         resourceType="Product"
         showVariants={false}
@@ -41,6 +59,7 @@ const IndexPage = () => {
         >
           <p>Select products to change their price temporarily.</p>
         </EmptyState>
+        <Loading />
       </Layout>
     </Page>
   );
