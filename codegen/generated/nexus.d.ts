@@ -17,6 +17,8 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  PromoDiscountType: "ABSOLUTE" | "RELATIVE"
+  PromoStatus: "ACTIVE" | "DELETED" | "INACTIVE"
 }
 
 export interface NexusGenScalars {
@@ -31,7 +33,10 @@ export interface NexusGenObjects {
   Mutation: {};
   Promo: { // root type
     code: string; // String!
+    discountDefinition: string; // String!
+    discountType: NexusGenEnums['PromoDiscountType']; // PromoDiscountType!
     id: string; // ID!
+    status: NexusGenEnums['PromoStatus']; // PromoStatus!
   }
   Query: {};
 }
@@ -44,7 +49,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
@@ -54,7 +59,10 @@ export interface NexusGenFieldTypes {
   }
   Promo: { // field return type
     code: string; // String!
+    discountDefinition: string; // String!
+    discountType: NexusGenEnums['PromoDiscountType']; // PromoDiscountType!
     id: string; // ID!
+    status: NexusGenEnums['PromoStatus']; // PromoStatus!
   }
   Query: { // field return type
     promo: NexusGenRootTypes['Promo'] | null; // Promo
@@ -70,7 +78,10 @@ export interface NexusGenFieldTypeNames {
   }
   Promo: { // field return type name
     code: 'String'
+    discountDefinition: 'String'
+    discountType: 'PromoDiscountType'
     id: 'ID'
+    status: 'PromoStatus'
   }
   Query: { // field return type name
     promo: 'Promo'
@@ -85,7 +96,10 @@ export interface NexusGenArgTypes {
     }
     upsertPromo: { // args
       code: string; // String!
+      discountDefinition: string; // String!
+      discountType: NexusGenEnums['PromoDiscountType']; // PromoDiscountType!
       id?: string | null; // ID
+      status: NexusGenEnums['PromoStatus']; // PromoStatus!
     }
   }
   Query: {
@@ -105,7 +119,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 

@@ -13,13 +13,32 @@ model Store {
   accessToken String
   isInstalled Boolean
 
+  promos Promo[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
 
+enum PromoStatus {
+  ACTIVE
+  INACTIVE
+  DELETED
+}
+
+enum PromoDiscountType {
+  ABSOLUTE
+  RELATIVE
+}
+
 model Promo {
-  id   String @id @default(cuid())
-  code String
+  id                 String            @id @default(cuid())
+  code               String
+  status             PromoStatus       @default(ACTIVE)
+  discountType       PromoDiscountType
+  discountDefinition String
+
+  store   Store  @relation(fields: [storeId], references: [id])
+  storeId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

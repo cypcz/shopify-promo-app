@@ -5,12 +5,26 @@
 type Mutation {
   createPayment: String!
   deletePromo(id: ID!): Promo!
-  upsertPromo(code: String!, id: ID): Promo!
+  upsertPromo(code: String!, discountDefinition: String!, discountType: PromoDiscountType!, id: ID, status: PromoStatus!): Promo!
 }
 
 type Promo {
   code: String!
+  discountDefinition: String!
+  discountType: PromoDiscountType!
   id: ID!
+  status: PromoStatus!
+}
+
+enum PromoDiscountType {
+  ABSOLUTE
+  RELATIVE
+}
+
+enum PromoStatus {
+  ACTIVE
+  DELETED
+  INACTIVE
 }
 
 type Query {
